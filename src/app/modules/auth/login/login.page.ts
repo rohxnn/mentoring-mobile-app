@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService, LocalStorageService, UserService, UtilService } from 'src/app/core/services';
+import { AuthService, LoaderService, LocalStorageService, UserService, UtilService } from 'src/app/core/services';
 import { DynamicFormComponent, JsonFormData } from 'src/app/shared/components/dynamic-form/dynamic-form.component';
 import { CommonRoutes } from 'src/global.routes';
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
@@ -72,7 +72,7 @@ export class LoginPage implements OnInit {
   termsOfServiceUrl = environment.termsOfServiceUrl;
   constructor(private authService: AuthService, private router: Router,private utilService: UtilService,
               private menuCtrl: MenuController, private activatedRoute: ActivatedRoute,private profileService: ProfileService,
-              private translateService: TranslateService, private localStorage: LocalStorageService, private userService: UserService) {
+              private translateService: TranslateService, private localStorage: LocalStorageService, private userService: UserService, private loaderService: LoaderService) {
     this.menuCtrl.enable(false);
   }
 
@@ -101,12 +101,15 @@ export class LoginPage implements OnInit {
   }
 
   async onSubmit() {
+    await this.loaderService.startLoader();
     this.form1.onSubmit();
     if (this.form1.myForm.valid) {
       this.userDetails = await this.authService.loginAccount(this.form1.myForm.value,this.captchaToken);
       if(this.userDetails === null && this.captchaToken){
+        await this.loaderService.stopLoader();
         this.captchaComponent.reset();
       }else if (this.userDetails !== null) {
+        await this.loaderService.stopLoader();
         this.utilService.ionMenuShow(true)
         let user = await this.profileService.getProfileDetailsFromAPI();
         this.userService.userEvent.next(user);
@@ -120,9 +123,11 @@ export class LoginPage implements OnInit {
           this.router.navigate([`/${CommonRoutes.TABS}/${CommonRoutes.HOME}`], { replaceUrl: true });
           this.menuCtrl.enable(true);
         }
+      }else {
+        await this.loaderService.stopLoader();
       }
       
-    }
+    } 
   }
 
   action(event) {

@@ -37,7 +37,7 @@ export class AuthService {
 
   async createAccount(formData) {
     this.deviceInfo = await this.util?.deviceDetails();
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.CREATE_ACCOUNT,
       payload: formData,
@@ -48,18 +48,18 @@ export class AuthService {
       await this.setUserInLocal(data);
       let user = await this.profileService.getProfileDetailsFromAPI();
       this.userService.userEvent.next(user);
-      this.loaderService.stopLoader();
+      
       return data.result.user;
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
       return null
     }
   }
 
   async loginAccount(formData,captchaToken:any) {
     this.deviceInfo = await this.util?.deviceDetails();
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.ACCOUNT_LOGIN,
       payload: formData,
@@ -68,11 +68,11 @@ export class AuthService {
     try {
       const data: any = await this.httpService.post(config);
       this.setUserInLocal(data);
-      this.loaderService.stopLoader();
+      
       return data.result.user
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
       return null;
     }
   }

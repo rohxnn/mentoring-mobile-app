@@ -43,7 +43,7 @@ export class ProfileService {
     private chatService: FrontendChatLibraryService
   ) {}
   async profileUpdate(formData, showToast = true) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.PROFILE_UPDATE,
       payload: formData,
@@ -61,16 +61,15 @@ export class ProfileService {
         profileDatas
       );
       this.userService.userEvent.next(profileDatas);
-      this.loaderService.stopLoader();
+      
       showToast ? this.toast.showToast(data.message, 'success') : null;
       return true;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 
   async profileDetails(showLoader = true): Promise<any> {
-    //showLoader ? await this.loaderService.startLoader() : null;
     return new Promise((resolve) => {
       try {
         this.localStorage
@@ -80,16 +79,15 @@ export class ProfileService {
               await this.getUserRole(data);
               resolve(data);
             }
-            //showLoader ? this.loaderService.stopLoader() : null;
           });
       } catch (error) {
-        // showLoader ? this.loaderService.stopLoader() : showLoader;
+
       }
     });
   }
 
   async generateOtp(formData, captchaToken) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.GENERATE_OTP,
       payload: formData,
@@ -97,16 +95,16 @@ export class ProfileService {
     };
     try {
       let data: any = await this.httpService.post(config);
-      this.loaderService.stopLoader();
+      
       this.toast.showToast(data.message, 'success');
       return data;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
   async updatePassword(formData) {
     this.deviceInfo = await this.util?.deviceDetails();
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.RESET_PASSWORD,
       payload: formData,
@@ -118,16 +116,16 @@ export class ProfileService {
       let userData = authService.setUserInLocal(data);
       let user = await this.getProfileDetailsFromAPI();
       this.userService.userEvent.next(user);
-      this.loaderService.stopLoader();
+      
       this.toast.showToast(data.message, 'success');
       return userData;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
       return null;
     }
   }
   async registrationOtp(formData, captchaToken) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.REGISTRATION_OTP,
       payload: formData,
@@ -135,14 +133,14 @@ export class ProfileService {
     };
     try {
       let data: any = await this.httpService.post(config);
-      this.loaderService.stopLoader();
+      
       return data;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
   async shareProfile(id) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.SHARE_MENTOR_PROFILE + id,
       payload: {},
@@ -150,10 +148,10 @@ export class ProfileService {
     try {
       let data = await this.httpService.get(config);
       let result = _.get(data, 'result');
-      this.loaderService.stopLoader();
+      
       return result;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 
@@ -247,7 +245,6 @@ export class ProfileService {
   }
 
   async getMentors(showLoader = true, obj) {
-    showLoader ? await this.loaderService.startLoader() : '';
     const config = {
       url:
         urlConstants.API_URLS.MENTORS_DIRECTORY_LIST +
@@ -265,10 +262,8 @@ export class ProfileService {
     };
     try {
       let data: any = await this.httpService.get(config);
-      showLoader ? await this.loaderService.stopLoader() : '';
       return data;
     } catch (error) {
-      showLoader ? await this.loaderService.stopLoader() : '';
       return error;
     }
   }
@@ -283,7 +278,7 @@ export class ProfileService {
       showToast ? this.toast.showToast(data.message, 'success') : null;
       return data;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 
@@ -309,7 +304,7 @@ export class ProfileService {
       }
       return false;
     } catch (error) {
-      this.loaderService.stopLoader();
+      
      return false
     }
   }

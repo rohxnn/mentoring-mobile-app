@@ -81,6 +81,7 @@ export class EditProfilePage implements OnInit, isDeactivatable {
     });
   }
   async ngOnInit() {
+    await this.loaderService.startLoader();
     this.userDetails = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
     const response = await this.form.getForm(EDIT_PROFILE_FORM);
     this.profileImageData.isUploaded = true;
@@ -91,6 +92,7 @@ export class EditProfilePage implements OnInit, isDeactivatable {
     this.formData = await this.form.populateEntity(this.formData, this.entityList)
     this.changeDetRef.detectChanges();
     if (this.userDetails) {
+      await this.loaderService.stopLoader();
       this.profileImageData.image = this.userDetails.image;
       this.profileService.prefillData(this.userDetails, this.entityNames, this.formData);
       this.showForm = true;
@@ -103,8 +105,10 @@ export class EditProfilePage implements OnInit, isDeactivatable {
         cancel: "CONTINUE"
         }
         this.utilService.profileUpdatePopup(msg)
+        await this.loaderService.stopLoader();
     }else{
         this.headerConfig.backButton = true;
+        await this.loaderService.stopLoader();
     }
   }
 
@@ -147,9 +151,11 @@ export class EditProfilePage implements OnInit, isDeactivatable {
 
   async onSubmit() {
     this.form1.onSubmit();
+    await this.loaderService.startLoader();
     if (this.form1.myForm.valid) {
       if (this.profileImageData.image && !this.profileImageData.isUploaded) {
         this.getImageUploadUrl(this.localImage);
+        await this.loaderService.stopLoader();
       } else {
         const form = Object.assign({}, this.form1.myForm.value);
         _.forEach(this.entityNames, (entityKey) => {
@@ -159,13 +165,16 @@ export class EditProfilePage implements OnInit, isDeactivatable {
         this.form1.myForm.markAsPristine();
         const updated = await this.profileService.profileUpdate(form);
         if(updated && this.redirectUrl){ 
+        await this.loaderService.stopLoader();
           this.router.navigate([this.redirectUrl], { replaceUrl: true })
         }else{
+        await this.loaderService.stopLoader();
           this.location.back()
         }
       }
     } else {
-      this.toast.showToast('Please fill all the mandatory fields', 'danger');
+      await this.loaderService.stopLoader();
+      this.toast.showToast('Please fill all the mandatory fields', 'danger');  
     }
   }
 
@@ -198,7 +207,7 @@ export class EditProfilePage implements OnInit, isDeactivatable {
       })))
   }
   async getImageUploadUrl(file) {
-    this.loaderService.startLoader();
+
     let config = {
       url: urlConstants.API_URLS.GET_FILE_UPLOAD_URL + file.name.replace(/[^A-Z0-9]+/ig, "_").toLowerCase()
     }

@@ -23,7 +23,7 @@ export class SessionService {
     if (!formData.hasOwnProperty("mentor_id")) {
       formData.mentor_id = this.userDetails?.id;
   }
-    await this.loaderService.startLoader();
+    
     const config = {
       url: queryParams == null ? urlConstants.API_URLS.CREATE_SESSION : urlConstants.API_URLS.CREATE_SESSION + `/${queryParams}`,
       payload: formData
@@ -32,18 +32,17 @@ export class SessionService {
       let result = await this.httpService.post(config);
       let msg = result?.message;
       result = _.get(result, 'result');
-      this.loaderService.stopLoader();
+      
       this.toast.showToast(msg, "success");
       return result;
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
       return false
     }
   }
 
   async getAllSessionsAPI(obj) {
-    //await this.loaderService.startLoader();
     let params;
     if (obj.status) {
       params = '&status=' + obj.status + '&search=' + obj.searchText
@@ -57,12 +56,11 @@ export class SessionService {
     try {
       let data = await this.httpService.get(config);
       let result = _.get(data, 'result');
-      this.loaderService.stopLoader();
+      
       return result;
       return {}
     }
     catch (error) {
-      // this.loaderService.stopLoader();
       let res = []
       return res;
     }
@@ -81,23 +79,20 @@ export class SessionService {
   }
 
   async getSessionDetailsAPI(id) {
-    //await this.loaderService.startLoader();
     const config = {
       url: urlConstants.API_URLS.GET_SESSION_DETAILS + id + '?get_mentees='+true,
       payload: {}
     };
     try {
       let data = await this.httpService.get(config);
-      //this.loaderService.stopLoader();
       return data;
     }
     catch (error) {
-      //this.loaderService.stopLoader();
     }
   }
 
   async getShareSessionId(id) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.GET_SHARE_SESSION_LINK + id,
       payload: {}
@@ -105,11 +100,11 @@ export class SessionService {
     try {
       let data = await this.httpService.get(config);
       let result = _.get(data, 'result');
-      this.loaderService.stopLoader();
+      
       return result;
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 
@@ -140,14 +135,14 @@ export class SessionService {
   }
 
   async startSession(id) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.START_SESSION + id,
       payload: {}
     };
     try {
       let data = await this.httpService.post(config);
-      this.loaderService.stopLoader();
+      
       if (data.responseCode == "OK") {
         await this.openBrowser(data.result.link);
         return true;
@@ -156,21 +151,21 @@ export class SessionService {
       }
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
       return false;
     }
   }
 
   async joinSession(sessionData) {
     let id = sessionData.sessionId ? sessionData.sessionId : sessionData.id;
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.JOIN_SESSION + id,
       payload: {}
     };
     try {
       let data = await this.httpService.get(config);
-      this.loaderService.stopLoader();
+      
       if (data.responseCode == "OK") {
         let modal = await this.modalCtrl.create({
           component: JoinDialogBoxComponent,
@@ -181,23 +176,23 @@ export class SessionService {
       }
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 
   async deleteSession(id) {
-    await this.loaderService.startLoader();
+    
     const config = {
       url: urlConstants.API_URLS.CREATE_SESSION + `/${id}`,
       payload: {}
     };
     try {
       let data = await this.httpService.delete(config);
-      this.loaderService.stopLoader();
+      
       return data;
     }
     catch (error) {
-      this.loaderService.stopLoader();
+      
     }
   }
 

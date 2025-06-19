@@ -16,15 +16,15 @@ export class LoaderService {
       this.loading = await this.loadingController.create({
         cssClass: 'custom-loader-message-class',
         spinner: 'circular',
-        message: message ? message : 'Please wait while loading ...',
+        message: message ? message : 'Loading, please wait...',
         translucent: true,
         backdropDismiss: false,
       });
       
-      // await this.loading.present();
+      await this.loading.present();
   }
 
   async stopLoader() {
-      // await this.loading.dismiss();
+      await this.loading.dismiss();
   }
 }
