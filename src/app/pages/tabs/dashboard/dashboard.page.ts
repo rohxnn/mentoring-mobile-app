@@ -25,7 +25,701 @@ export class DashboardPage implements OnInit {
   data: any;
   dynamicFormControls: any[] = [];
   filteredFormData: any;
-  bigNumberFormData: any;
+  bigNumberFormData =  {
+        "mentee": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_SESSIONS_ATTENDED",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_PUBLIC_SESSIONS_ATTENDED",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_SESSIONS_ATTENDED",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "TOTAL_HOURS_PRIVATE_LEARNING",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_HOURS_PUBLIC_LEARNING",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_HOURS_LEARNING",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_session_enrolled": "PRIVATE_SESSION_ENROLLED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_session_enrolled": "PUBLIC_SESSION_ENROLLED",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_session_attended": "PRIVATE_SESSION_ATTENDED",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_session_attended": "PUBLIC_SESSION_ATTENDED",
+                "backgroundColor": "#858585"
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "TOTAL_SESSIONS_ATTENDED",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "TOTAL_HOURS_LEARNING",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "public_session_enrolled": "SESSION_ENROLLED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_session_attended": "SESSIONS_ATTENDED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_attended",
+                "data": [
+                  {
+                    "label": "TOTAL_SESSIONS_ATTENDED",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_learning",
+                "data": [
+                  {
+                    "label": "TOTAL_HOURS_LEARNING",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_session_attended": "SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_session_enrolled": "SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "DURATION",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "TYPE",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": []
+              },
+              {
+                "label": "CATEGORIES",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "isMultiple": true,
+                "entities": []
+              }
+            ]
+          },
+          "chartUrl": "",
+
+          "report_code": "split_of_sessions_enrolled_and_attended_by_user",
+          "table_report_code": "mentee_session_details",
+          "tableUrl": "",
+          "tableTitle": "SESSIONS_DETAILS",
+          "headers": ""
+        },
+        "mentor": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_SESSIONS_CONDUCTED",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_PUBLIC_SESSIONS_CONDUCTED",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_SESSIONS_CONDUCTED",
+                    "key": "total_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_MENTORING_CONDUCTED",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_PUBLIC_MENTORING_CONDUCTED",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_MENTORING_CONDUCTED",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "PRIVATE_SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_created": "PUBLIC_SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_sessions_conducted": "PRIVATE_SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_sessions_conducted": "PUBLIC_SESSIONS_CONDUCTED",
+                "backgroundColor": "#858585"
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_MENTORING_CONDUCTED",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_SESSIONS_CONDUCTED",
+                    "key": "public_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "public_sessions_created": "SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_conducted": "SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_MENTORING_CONDUCTED",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_number_of_sessions_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_SESSIONS_CONDUCTED",
+                    "key": "private_count",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_sessions_conducted": "SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "DURATION",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "TYPE",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": []
+              },
+              {
+                "label": "CATEGORIES",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "isMultiple": true,
+                "entities": []
+              }
+            ]
+          },
+          "chartUrl": "",
+          "tableConfig": [
+            {
+            "report_code": "split_of_sessions_conducted",
+            "table_report_code": "mentoring_session_details",
+            "tableUrl": "",
+            "tableTitle": "MENTORING_SESSION_DETAILS",
+            },
+            {
+            "report_code": "split_of_sessions_conducted",
+            "table_report_code": "mentoring_session_details",
+            "tableUrl": "",
+            "tableTitle": "MENTORING_SESSION_DETAILS",
+            }
+          ],
+         
+          "headers": ""
+        },
+        "session_manager": {
+          "ALL": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_MENTORING_CONDUCTED",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_PUBLIC_MENTORING_CONDUCTED",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_MENTORING_CONDUCTED",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_SESSIONS_CRETED_BY_SM",
+                    "key": "total_private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_PUBLIC_SESSIONS_CRETED_BY_SM",
+                    "key": "total_public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  },
+                  {
+                    "label": "TOTAL_SESSIONS_CRETED_BY_SM",
+                    "key": "total_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "PRIVATE_SESSIONS_CREATED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_created": "PUBLIC_SESSIONS_CREATED",
+                "backgroundColor": "#b94a3b"
+              },
+              {
+                "private_sessions_conducted": "PRIVATE_SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              },
+              {
+                "public_sessions_conducted": "PUBLIC_SESSIONS_CONDUCTED",
+                "backgroundColor": "#858585"
+              }
+            ]
+          },
+          "PUBLIC": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_PUBLIC_MENTORING_CONDUCTED",
+                    "key": "public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
+                  {
+                    "label": "TOTAL_PUBLIC_SESSIONS_CRETED_BY_SM",
+                    "key": "total_public_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "public_sessions_created": "SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "public_sessions_conducted": "SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "PRIVATE": {
+            "bigNumbers": [
+              {
+                "Url": "total_number_of_hours_of_mentoring_conducted",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_MENTORING_CONDUCTED",
+                    "key": "private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              },
+              {
+                "Url": "total_hours_of_sessions_created_by_session_manager",
+                "data": [
+                  {
+                    "label": "TOTAL_PRIVATE_SESSIONS_CRETED_BY_SM",
+                    "key": "total_private_hours",
+                    "value": "0",
+                    "Meta": {
+                      "color": "#fff",
+                      "background": "#ccc",
+                      "textAlign": ""
+                    }
+                  }
+                ]
+              }
+            ],
+            "chartConfig": [
+              {
+                "private_sessions_created": "SESSIONS_CREATED_ASSIGNED",
+                "backgroundColor": "#832215"
+              },
+              {
+                "private_sessions_conducted": "SESSIONS_CONDUCTED",
+                "backgroundColor": "#999999"
+              }
+            ]
+          },
+          "form": {
+            "controls": [
+              {
+                "label": "DURATION",
+                "value": "duration",
+                "type": "select",
+                "defaultValue": "month",
+                "entities": [
+                  {
+                    "label": "This week",
+                    "value": "week"
+                  },
+                  {
+                    "label": "This month",
+                    "value": "month"
+                  },
+                  {
+                    "label": "This quarter",
+                    "value": "quarter"
+                  }
+                ]
+              },
+              {
+                "label": "TYPE",
+                "value": "type",
+                "type": "select",
+                "defaultValue": "ALL",
+                "entities": []
+              },
+              {
+                "label": "CATEGORIES",
+                "value": "categories",
+                "type": "select",
+                "defaultValue": "",
+                "isMultiple": true,
+                "entities": []
+              }
+            ]
+          },
+          "chartUrl": "",
+          "report_code": "split_of_sessions_created_and_conducted",
+          "table_report_code": "session_manger_session_details",
+          "tableUrl": "",
+          "tableTitle": "MENTORING_SESSION_DETAILS",
+          "headers": ""
+        }
+      };
   result: any;
   selectedRole: any;
   report_code: any;
@@ -68,8 +762,9 @@ export class DashboardPage implements OnInit {
   async ngOnInit() {
     this.result = await this.reportFilterListApi();
     this.user = await this.getUserRole(this.result);
-    const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
-    this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
+    // const bigNumberResult = await this.form.getForm(BIG_NUMBER_DASHBOARD_FORM);
+    // this.bigNumberFormData = _.get(bigNumberResult, 'data.fields');
+    console.log(this.bigNumberFormData, 'bigNumberResult');
     this.filteredCards = !this.filteredCards.length ? this.bigNumberFormData[this.user[0]] : [];
     this.selectedRole = this.user[0];
     this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
@@ -77,6 +772,7 @@ export class DashboardPage implements OnInit {
     this.session_type = 'ALL';
     this.chartBodyConfig = this.filteredFormData;
     this.chartBody = this.chartBodyConfig;
+    console.log(this.chartBody, 'chartBody');
     await this.getTranslatedLabel();
     if(this.user){
       this.initialDuration();
@@ -155,6 +851,7 @@ export class DashboardPage implements OnInit {
     this.session_type = 'ALL';
     this.selectedDuration = 'month';
     this.filteredFormData = this.bigNumberFormData[this.selectedRole] || [];
+    console.log(this.filteredFormData, 'filteredFormData');
     this.filteredCards = this.filteredFormData|| [];
     this.chartBodyConfig = this.filteredCards;
     this.chartBody  = this.chartBodyConfig;
@@ -166,6 +863,7 @@ export class DashboardPage implements OnInit {
     this.updateFormData(this.result);
     this.chartBodyConfig = await this.filteredFormData;
     this.chartBody = this.chartBodyConfig;
+    console.log(this.chartBody, 'chartBody');
     this.calculateDuration();
     setTimeout(() => { 
       this.prepareChartUrl();
@@ -230,6 +928,7 @@ export class DashboardPage implements OnInit {
     for (const key in DASHBOARD_TABLE_META_KEYS) {
       if (DASHBOARD_TABLE_META_KEYS.hasOwnProperty(key)) {
         this.metaKeys[key] = this.translate.instant(DASHBOARD_TABLE_META_KEYS[key]);
+        console.log(this.metaKeys[key], 'metaKeys');
       }
     }
   }
@@ -304,21 +1003,26 @@ export class DashboardPage implements OnInit {
     const params = `${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +
       `report_code=${this.report_code}${queryParams}`;
     this.chartBodyPayload =  this.entityTypes ? { entityTypes: this.entityTypes}: {};
+    console.log(this.chartBodyPayload, 'chartBodyPayload');
     const resp = await this.reportData(params, this.chartBodyPayload);
     if (value) {
       return resp.data;
     }
   }
-  async prepareTableUrl(){
-    this.chartBody.tableUrl = "";
+  async prepareTableUrl() {
     const queryParams = `&report_role=${this.selectedRole}` +
-    `&start_date=${this.startDateEpoch || ''}` +
-    `&session_type=${this.session_type}` +
-    `&end_date=${this.endDateEpoch || ''}`;
-  this.chartBody.tableUrl = this.chartBodyConfig.tableUrl;
-  setTimeout(() => {
-  this.chartBody.tableUrl =  `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` +'report_code='+ this.chartBody.table_report_code +queryParams;}, 10);
-  this.chartBody.headers = await this.apiService.setHeaders();
+      `&start_date=${this.startDateEpoch || ''}` +
+      `&session_type=${this.session_type}` +
+      `&end_date=${this.endDateEpoch || ''}`;
+
+    if (Array.isArray(this.chartBody.tableConfig)) {
+      this.chartBody.tableConfig.forEach((item: any) => {
+        const r_code = item.table_report_code;
+        item.tableUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}report_code=${r_code}${queryParams}`;
+      });
+    }
+
+    this.chartBody.headers = await this.apiService.setHeaders();
   }
   async prepareChartUrl(){
     this.chartBody.chartUrl ="";
@@ -333,7 +1037,7 @@ export class DashboardPage implements OnInit {
   setTimeout(() => {
   this.chartBody.chartUrl = `${environment.baseUrl}${urlConstants.API_URLS.DASHBOARD_REPORT_DATA}` + 'report_code='+ this.chartBody.report_code + queryParams;
   }, 10);
-  this.chartBody.headers = await this.apiService.setHeaders();
+
   }
 }
 

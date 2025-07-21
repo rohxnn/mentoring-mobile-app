@@ -45,15 +45,14 @@
       </ion-row>
     </ion-grid>
   </div>
-
-  <div class="tables inner-div-style"  *ngIf="selectedRole !=='org_admin'">
-    <ion-grid>
-      <ion-row *ngIf="chartBody?.tableUrl">
-        <lib-table [url]="chartBody?.tableUrl" [headers]="chartBody?.headers" [showDownload]="true"  [title]="translate.get(chartBody?.tableTitle) | async"  style="width: 100%;" [metaKeys]="metaKeys" ></lib-table>
+  @for (tableConfig of chartBody.tableConfig; track tableConfig) {
+  <div class="tables inner-div-style"  >
+    <ion-grid >
+      <ion-row *ngIf="tableConfig?.tableUrl">
+        <lib-table [url]="tableConfig?.tableUrl" [headers]="chartBody?.headers" [showDownload]="true"  [title]="translate.get(tableConfig?.tableTitle) | async"  style="width: 100%;" [metaKeys]="metaKeys" ></lib-table>
       </ion-row>
     </ion-grid>
   </div>
-  <div *ngIf="selectedRole ==='org_admin'" style="text-align: center;">
-    <h1>Coming soon</h1>
-  </div>
+  }
+
 </ion-content>  
