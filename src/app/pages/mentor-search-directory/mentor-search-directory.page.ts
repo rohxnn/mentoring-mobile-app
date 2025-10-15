@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import * as _ from 'lodash';
 import { CHAT_MESSAGES } from 'src/app/core/constants/chatConstants';
+import { MENTOR_DIR_CARD_FORM } from 'src/app/core/constants/formConstant';
 import { paginatorConstants } from 'src/app/core/constants/paginatorConstants';
 import { ToastService, UtilService } from 'src/app/core/services';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -10,6 +12,8 @@ import { PermissionService } from 'src/app/core/services/permission/permission.s
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
 import { FilterPopupComponent } from 'src/app/shared/components/filter-popup/filter-popup.component';
 import { CommonRoutes } from 'src/global.routes';
+import { LocalStorageService } from 'src/app/core/services';
+import { localKeys } from 'src/app/core/constants/localStorage.keys';
 
 @Component({
   selector: 'app-mentor-search-directory',
@@ -54,6 +58,9 @@ export class MentorSearchDirectoryPage implements OnInit {
     }
   };
   valueFromChipAndFilter: string;
+  mentorForm: any
+  currentUserId: any;
+
 
   constructor(
     private router: Router,
@@ -63,7 +70,8 @@ export class MentorSearchDirectoryPage implements OnInit {
     private formService: FormService,
     private utilService: UtilService,
     private toast: ToastService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private localStorage: LocalStorageService,
   ) { }
 
   ngOnInit() {
@@ -73,6 +81,10 @@ export class MentorSearchDirectoryPage implements OnInit {
    }
 
 async ionViewWillEnter() {
+  let user = await this.localStorage.getLocalData(localKeys.USER_DETAILS)
+  this.currentUserId= user.id
+  const result = await this.formService.getForm(MENTOR_DIR_CARD_FORM);
+  this.mentorForm = _.get(result, 'data.fields.controls');
   const queryParams = this.route.snapshot.queryParams;
   const search = queryParams['search'];
   const chip = queryParams['chip'];
@@ -148,8 +160,17 @@ async ionViewWillEnter() {
       componentProps: { filterData: this.filterData }
     });
 
-    modal.onDidDismiss().then(async (dataReturned) => {
-      this.filteredDatas = []
+    modal.onDidDismiss().then(async (dataReturned) => { 
+      this.filteredDatas = [];
+      if(dataReturned?.data?.role === 'closed'){
+        this.filterData = dataReturned?.data?.data;
+        return;
+      }
+      if(Object.keys(dataReturned?.data).length === 0){
+            this.chips = [];
+            this.filteredDatas = [];
+            this.urlQueryData = null;
+      }
       if (dataReturned.data && dataReturned.data.data) {
         if (dataReturned.data.data.selectedFilters) {
           for (let key in dataReturned.data.data.selectedFilters) {
@@ -159,7 +180,7 @@ async ionViewWillEnter() {
         }
         this.extractLabels(dataReturned.data.data.selectedFilters);
         this.getUrlQueryData();
-      }
+      } 
       this.page = 1;
       this.setPaginatorToFirstpage = true;
       this.getMentors()
@@ -253,16 +274,21 @@ async ionViewWillEnter() {
       this.isOpen = false;
       this.data = data.result.data;
       this.totalCount = data.result.count;
+      this.data.forEach(mentor => {
+      if (mentor.id === this.currentUserId) {
+        mentor.buttonConfig = this.buttonConfig.map(btn => ({ ...btn, isHide: true }));
+      } else {
+        mentor.buttonConfig = this.buttonConfig.map(btn => ({ ...btn }));
+      }
+    });
+      this.filterIcon = true;
     } else {
-       
       this.data = [];
       this.totalCount = [];
-     
       if (Object.keys(this.filteredDatas || {}).length === 0 && !this.searchAndCriterias.headerData.criterias?.name) {
         this.filterIcon = false;
       }
     }
-    this.filterIcon = !!obj.searchText?.trim();
   }
 
   removeChip(event) {
@@ -281,7 +307,6 @@ async ionViewWillEnter() {
         }
       }
     };
-    this.filterIcon = false;
     this.chips = [];
     this.urlQueryData = null;
   }

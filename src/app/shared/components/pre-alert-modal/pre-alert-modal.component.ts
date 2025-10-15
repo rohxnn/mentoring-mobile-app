@@ -13,6 +13,9 @@ export class PreAlertModalComponent {
   @Input() data: any;
   @Input() type: 'link' | 'file' = 'link';
   @Input() heading: string = '';
+  @Input() allowedFileTypes : any;
+  @Input() maxSize : any;
+  @Input() errorMsg : any;
 
   name: string = '';
   link: string = '';
@@ -46,7 +49,7 @@ export class PreAlertModalComponent {
   saveLink() {
     if (this.type === 'file') {
         const obj = {
-          name: this.name, 
+          name: this.name ? this.name : this.uploadedFile.name,
           file: this.uploadedFile
         };
         this.modalController.dismiss({
@@ -55,7 +58,7 @@ export class PreAlertModalComponent {
         });
     } else if(this.type === 'link') {
         const obj = {
-          name: this.name,
+          name: this.name ? this.name : this.link,
           link: this.link,
           type: this.data.name,
           isLink: true,
@@ -69,7 +72,7 @@ export class PreAlertModalComponent {
       } 
   }
   selectFile() {
-   this.utilService.uploadFile().then((file: File) => {
+  this.utilService.uploadFile(this.allowedFileTypes,this.maxSize,this.errorMsg).then((file: File) => {
      this.uploadedFile = file;
    }).catch((error) => {
      console.error('File upload failed:', error);
@@ -82,13 +85,6 @@ export class PreAlertModalComponent {
         const actionSheet = await this.actionSheetController.create({
             header: 'Select Resource',
             buttons: [
-                {
-                    text: 'Camera',
-                    icon: 'camera',
-                    handler: () => {
-                      this.openCamera();
-                    }
-                },
                 {
                     text: 'File',
                     icon: 'folder',
@@ -108,24 +104,6 @@ export class PreAlertModalComponent {
       this.selectFile()
     }
   
-  }
-
-  openCamera() {
-    this.fileUpload.nativeElement.click();
-  }
-
-  uploadCamera(event) {
-    const allowedFormats = ['image/jpeg', 'image/png'];
-    if (allowedFormats.includes(event.target.files[0].type)) {
-      this.uploadedFile = event.target.files[0];
-      this.toast.showToast("SUCCESSFULLY_ATTACHED", "success");
-      if (this.fileUpload?.nativeElement) {
-        this.fileUpload.nativeElement.value = '';
-      }
-    }
-    else {
-      this.toast.showToast("PLEASE_UPLOAD_IMAGE_FILE", "danger")
-    }
   }
 
   removeFile() {

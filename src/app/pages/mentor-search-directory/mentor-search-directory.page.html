@@ -26,11 +26,11 @@
   <ion-grid >
     <ion-row class="d-flex ">
       <ion-col *ngFor="let value of data" padding size-xs="12" size-sm="12" size-md="6" size-lg="6" size-xl="4" align-self-stretch>
-        <app-generic-card [data]="value" (onClickEvent)="eventAction($event)" [buttonConfig]="buttonConfig"></app-generic-card>
+        <app-generic-card [data]="value" (onClickEvent)="eventAction($event)" [buttonConfig]="value.buttonConfig" [cardConfig]="mentorForm"></app-generic-card>
       </ion-col>
     </ion-row>
   </ion-grid>
   <div *ngIf="totalCount == 0 || !data">
-    <app-no-data-found [messageHeader]="'NO_MENTORS_AVAILABLE'"> </app-no-data-found>
+      <app-no-data-found [messageHeader]="'SEARCH_RESULT_NOT_FOUND'" [messageDescription]="'NO_SESSION_MESSAGE_DESCRIPTION'"> </app-no-data-found>
   </div>
 </ion-content>

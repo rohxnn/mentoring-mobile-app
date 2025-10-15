@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { localKeys } from 'src/app/core/constants/localStorage.keys';
+import { LocalStorageService } from 'src/app/core/services';
 import { CommonRoutes } from 'src/global.routes';
 
 @Component({
@@ -8,14 +10,20 @@ import { CommonRoutes } from 'src/global.routes';
   styleUrls: ['./generic-card.component.scss'],
 })
 export class GenericCardComponent implements OnInit {
+  chatConfig: string;
   @Input() data: any;
   @Output() onClickEvent = new EventEmitter();
   @Input() buttonConfig: any;
   @Input() meta: any;
+  @Input() cardConfig: any;
+  @Input() disableButton: boolean;
+  @Input() showTag: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private localStorage: LocalStorageService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    this.chatConfig = await this.localStorage.getLocalData(localKeys['CHAT_CONFIG'])
+  }
 
   onCardClick(data) {
     this.router.navigate([
@@ -28,10 +36,14 @@ export class GenericCardComponent implements OnInit {
       data: data.id || data.user_id,
       type: action,
       rid: data?.connection_meta?.room_id,
+      element: data
     };
     this.onClickEvent.emit(value);
   }
   showButton(event, data) {
+    if (event.action === 'chat' && this.chatConfig != 'true') {
+      return false;
+      }
     if (!event.hasCondition) {
       return true;
     } else if (event[event.onCheck] == data[event.onCheck]) {

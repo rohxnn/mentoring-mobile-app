@@ -14,6 +14,10 @@ import {
 import { Clipboard } from '@capacitor/clipboard';
 import { SessionService } from 'src/app/core/services/session/session.service';
 import { CommonRoutes } from 'src/global.routes';
+import { Location } from '@angular/common';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { PROFILE_DETAILS_FORM } from 'src/app/core/constants/formConstant';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-mentor-details',
@@ -23,6 +27,7 @@ import { CommonRoutes } from 'src/global.routes';
 export class MentorDetailsPage implements OnInit {
   mentorId;
   public isMobile: any;
+  currentUserId: any;
   public headerConfig: any = {
     backButton: false,
     headerColor: "primary"
@@ -33,56 +38,21 @@ export class MentorDetailsPage implements OnInit {
       id: null,
     },
     buttons: [
-      {
-        label: 'CHAT',
-        action: 'chat',
-      },
-      {
-        label: 'REQUEST_SESSION',
-        action: 'requestSession',
-      },
-    ],
+    {
+      label: 'CHAT',
+      action: 'chat',
+      isHide: false
+    },
+          {
+            label: 'REQUEST_SESSION',
+            action: 'requestSession',
+             isHide: false
+          },
+  ],
   };
 
-  detailData: any = {
-    form: [
-      {
-        title: 'ABOUT',
-        key: 'about',
-      },
-      {
-        title: 'DESIGNATION',
-        key: 'designation',
-      },
-      {
-        title: 'ORGANIZATION',
-        key: 'organizationName',
-      },
-      {
-        title: 'YEAR_OF_EXPERIENCE',
-        key: 'experience',
-      },
-      {
-        title: 'KEY_AREAS_OF_EXPERTISE',
-        key: 'area_of_expertise',
-      },
-      {
-        title: 'EDUCATION_QUALIFICATION',
-        key: 'education_qualification',
-      },
-      {
-        title: 'LANGUAGES',
-        key: 'languages',
-      },
-    ],
-    data: {
-      rating: {
-        average: 0,
-      },
-      sessions_hosted: 0,
-      organizationName: '',
-    },
-  };
+  detailData: any;
+
   userCantAccess?: boolean = false;
   isloaded: boolean = false;
   segmentValue = 'about';
@@ -99,28 +69,23 @@ export class MentorDetailsPage implements OnInit {
     private userService: UserService,
     private localStorage: LocalStorageService,
     private toast: ToastService,
-    private utilService: UtilService
-  ) {
-    this.isMobile = utilService.isMobile();
-    routerParams.params.subscribe((params) => {
-      this.mentorId = this.buttonConfig.meta.id = params.id;
-      this.getMentor();
-      // this.userService.getUserValue().then(async (result) => {
-      //   console.log(result,"resultresultresultresult");
-      //   if (result) {
-      //     this.getMentor();
-      //   } else {
-      //     this.router.navigate([`/${CommonRoutes.AUTH}/${CommonRoutes.LOGIN}`], { queryParams: { mentorId: this.mentorId } })
-      //   }
-      // })
-    })
-  }
+    private utilService: UtilService, 
+    private location: Location,
+    private form: FormService
+  ) {}
 
   ngOnInit() {}
   async ionViewWillEnter() {
-    // this.upcomingSessions = await this.sessionService.getUpcomingSessions(
-    //   this.mentorId
-    // );
+    this.isMobile = this.utilService.isMobile();
+    let user = await this.localStorage.getLocalData(localKeys.USER_DETAILS)
+    const result = await this.form.getForm(PROFILE_DETAILS_FORM);
+    this.detailData = _.get(result, 'data.fields');
+    this.routerParams.params.subscribe((params) => {
+      this.mentorId = this.buttonConfig.meta.id = params.id;
+      this.getMentor();
+    })
+    this.currentUserId= user.id
+    this.updateButtonConfig();
   }
 
   async getMentor() {
@@ -128,34 +93,42 @@ export class MentorDetailsPage implements OnInit {
     this.mentorProfileData = await this.getMentorDetails();
     this.updateButtonConfig();
     this.isloaded = true;
-    switch (this.mentorProfileData?.responseCode) {
-      case 'OK':
-        this.userCanAccess = true;
-        break;
-      case 'SERVER_ERROR':
-        this.userCantAccess = true;
-        break;
-      case 'CLIENT_ERROR':
-        this.userNotFound = true;
-        break;
-    }
-
     this.detailData.data = this.mentorProfileData?.result;
     this.detailData.data.organizationName =
-      this.mentorProfileData?.result?.organization?.name;
+      this.mentorProfileData?.result?.organization?.name || '';
     this.headerConfig.share = this.detailData.data?.is_mentor;
   }
 
-  async getMentorDetails() {
-    const config = {
-      url: urlConstants.API_URLS.GET_PROFILE_DATA + this.mentorId,
-      payload: {},
-    };
-    try {
-      let data = await this.httpService.get(config);
-      return data;
-    } catch (error) {}
+async getMentorDetails() {
+  const config = {
+    url: urlConstants.API_URLS.GET_PROFILE_DATA + this.mentorId,
+    payload: {},
+  };
+  try {
+    const data = await this.httpService.get(config);
+    if (data) {
+      this.userCanAccess = true;
+    }
+    return data;
+  } catch (error: any) {
+    switch (error?.status) {
+     
+    case 404:
+      this.userNotFound = true;
+      break;
+
+    case 403:
+      this.userCantAccess = true;
+      break;
+
+    default:
+      this.toast.showToast('SOMETHING_WENT_WRONG', 'danger');
+      this.location.back();
+      break;
   }
+  }
+}
+
 
   goToHome() {
     this.router.navigate([`/${CommonRoutes.TABS}/${CommonRoutes.HOME}`]);
@@ -179,7 +152,7 @@ export class MentorDetailsPage implements OnInit {
   }
   async share() {
     if(this.isMobile && navigator.share){
-          let url = `/${CommonRoutes.MENTOR_DETAILS}/${this.buttonConfig.meta.id}`;
+          let url = `/mentoring/${CommonRoutes.MENTOR_DETAILS}/${this.buttonConfig.meta.id}`;
           let link = await this.utilService.getDeepLink(url);
           let params = {
             link: link,
@@ -231,17 +204,25 @@ export class MentorDetailsPage implements OnInit {
           {
             label: 'CHAT',
             action: 'chat',
+             isHide: false
           },
         ]
       : [
           {
             label: 'CHAT',
             action: 'chat',
+             isHide: false
           },
           {
             label: 'REQUEST_SESSION',
             action: 'requestSession',
+             isHide: false
           },
         ];
+        if (String(this.mentorProfileData?.result?.id) === String(this.currentUserId)) {
+            this.buttonConfig.buttons = this.buttonConfig.buttons.map(btn => ({
+                   ...btn,isHide: true
+            }));
+           }
   }
 }
