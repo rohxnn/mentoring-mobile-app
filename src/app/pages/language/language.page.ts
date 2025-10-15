@@ -32,17 +32,17 @@ export class LanguagePage implements OnInit {
 
   ngOnInit() {
     this.localStorage.getLocalData(localKeys.SELECTED_LANGUAGE).then(data =>{
-      this.selectedLanguage = data.value;
+      this.selectedLanguage = data;
     })
   }
 
   onCardClick(event){
-    this.selectedLanguage=event.value;
+    this.selectedLanguage=event;
   }
 
   onSubmit(){
     let showProfileUpdateToast = false;
-    this.profile.updateLanguage({preferred_language:this.selectedLanguage}, showProfileUpdateToast).then((result)=>{
+    this.profile.updateLanguage({preferred_language:this.selectedLanguage.value}, showProfileUpdateToast).then((result)=>{
       if(result){
         this.setLanguage(this.selectedLanguage);
       }
@@ -51,7 +51,7 @@ export class LanguagePage implements OnInit {
 
   setLanguage(lang){
     this.localStorage.setLocalData(localKeys.SELECTED_LANGUAGE,lang).then(() =>{
-      this.translate.use(lang);
+      this.translate.use(lang.value);
       this.toast.showToast("LANGUAGE_CHANGED_SUCCESSFULLY","success");
     }).catch(error => {
       this.toast.showToast("ERROR_LANGUAGE_CHANGE","danger");
