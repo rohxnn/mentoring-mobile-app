@@ -18,7 +18,7 @@ export class DashboardPage implements OnInit {
   user: any;
   sessions: any;
   filteredCards: any = [];
-  bigNumbersConfig: any;
+  bigNumbersConfig: any
   startDate: moment.Moment;
   endDate: moment.Moment;
   data: any;
