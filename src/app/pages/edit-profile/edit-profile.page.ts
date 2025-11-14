@@ -83,7 +83,433 @@ export class EditProfilePage implements OnInit, isDeactivatable {
   }
   async ngOnInit() {
     this.userDetails = await this.localStorage.getLocalData(localKeys.USER_DETAILS);
-    const response = await this.form.getForm(EDIT_PROFILE_FORM);
+    const response =  {
+    "type": "editProfile",
+    "sub_type": "editProfileForm",
+    "action": "update",
+    "data": {
+      "templateName": "defaultTemplate",
+      "fields": {
+        "controls": [
+          {
+              "name": "name",
+              "label": "Your name",
+              "value": "Agastya",
+              "class": "ion-no-margin",
+              "type": "text",
+              "position": "floating",
+              "placeHolder": "Please enter your full name",
+              "errorMessage": {
+                  "required": "Enter your name",
+                  "pattern": "This field can only contain alphabets"
+              },
+              "validators": {
+                  "required": true,
+                  "pattern": "^[^0-9!@#%$&()\\-`.+,/\"]*$"
+              },
+              "options": [],
+              "meta": {
+                  "showValidationError": true,
+                  "maxLength": 255
+              }
+          },
+          {
+              "name": "designation",
+              "label": "Designation",
+              "class": "ion-no-margin",
+              "value": [
+                  {
+                      "label": "Cluster officials",
+                      "value": "co"
+                  },
+                  {
+                      "label": "District education officer",
+                      "value": "deo"
+                  }
+              ],
+              "type": "chip",
+              "position": "",
+              "disabled": false,
+              "errorMessage": {
+                  "required": "Enter your designation"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [
+                  {
+                      "label": "Block education officer",
+                      "value": "beo"
+                  },
+                  {
+                      "label": "Cluster officials",
+                      "value": "co"
+                  },
+                  {
+                      "label": "District education officer",
+                      "value": "deo"
+                  },
+                  {
+                      "label": "Head master",
+                      "value": "hm"
+                  },
+                  {
+                      "label": "Teacher",
+                      "value": "te"
+                  }
+              ],
+              "meta": {
+                  "entityType": "designation",
+                  "addNewPopupHeader": "Add a designation",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": true,
+                      "addChipLabel": "Other"
+                  },
+                  "errorLabel": "Designation"
+              },
+              "multiple": true
+          },
+          {
+              "name": "experience",
+              "label": "Your experience in years",
+              "value": "3",
+              "class": "ion-no-margin",
+              "type": "text",
+              "position": "floating",
+              "placeHolder": "Ex. 5 years",
+              "errorMessage": {
+                  "required": "Enter your experience in years"
+              },
+              "isNumberOnly": false,
+              "validators": {
+                  "required": false,
+                  "maxLength": 2
+              },
+              "options": []
+          },
+          {
+              "name": "about",
+              "label": "Tell us about yourself",
+              "value": "QA",
+              "class": "ion-no-margin",
+              "type": "textarea",
+              "position": "floating",
+              "errorMessage": {
+                  "required": "This field cannot be empty",
+                  "pattern": "This field can only contain alphanumeric characters"
+              },
+              "placeHolder": "Please use only 150 characters",
+              "validators": {
+                  "required": false,
+                  "maxLength": 150,
+                  "pattern": "^[a-zA-Z0-9-.,s ]+$"
+              },
+              "options": []
+          },
+          {
+              "name": "area_of_expertise",
+              "label": "Your expertise",
+              "class": "ion-no-margin",
+              "value": [
+                  {
+                      "label": "Educational leadership",
+                      "value": "educational_leadership"
+                  }
+              ],
+              "type": "chip",
+              "position": "",
+              "disabled": false,
+              "errorMessage": {
+                  "required": "Enter your expertise"
+              },
+              "validators": {
+                  "required": false
+              },
+              "options": [
+                  {
+                      "label": "Communication",
+                      "value": "communication"
+                  },
+                  {
+                      "label": "Educational leadership",
+                      "value": "educational_leadership"
+                  },
+                  {
+                      "label": "Professional development",
+                      "value": "professional_development"
+                  },
+                  {
+                      "label": "School process",
+                      "value": "school_process"
+                  },
+                  {
+                      "label": "SQAA",
+                      "value": "sqaa"
+                  }
+              ],
+              "meta": {
+                  "entityType": "area_of_expertise",
+                  "addNewPopupHeader": "Add your expertise",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": true,
+                      "addChipLabel": "Other"
+                  },
+                  "errorLabel": "Expertise",
+                  "addChipLabel": "Add"
+              },
+              "multiple": true
+          },
+          {
+              "name": "education_qualification",
+              "label": "Education qualification",
+              "value": "BBA",
+              "class": "ion-no-margin",
+              "type": "text",
+              "position": "floating",
+              "errorMessage": {
+                  "required": "Enter education qualification",
+                  "pattern": "This field can only contain alphanumeric characters"
+              },
+              "placeHolder": "Ex. BA, B.ED",
+              "validators": {
+                  "required": false,
+                  "maxLength": 255,
+                  "pattern": "^[a-zA-Z0-9-.,s ]+$"
+              },
+              "options": [],
+              "meta": {
+                  "errorLabel": "Education qualification"
+              }
+          },
+          {
+              "name": "languages",
+              "label": "Languages",
+              "class": "ion-no-margin",
+              "value": [
+                  {
+                      "label": "English",
+                      "value": "en_in"
+                  }
+              ],
+              "type": "chip",
+              "position": "",
+              "disabled": false,
+              "errorMessage": {
+                  "required": "Enter language"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [
+                  {
+                      "label": "English",
+                      "value": "en_in"
+                  },
+                  {
+                      "label": "Hindi",
+                      "value": "hi"
+                  }
+              ],
+              "meta": {
+                  "entityType": "languages",
+                  "addNewPopupHeader": "Add new language",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": true,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "Medium"
+              },
+              "multiple": true
+          },
+          {
+              "name": "state",
+              "label": "State",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter state"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "state",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "State"
+              },
+              "multiple": false
+          },
+          {
+              "name": "district",
+              "label": "District",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter district"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "district",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "district"
+              },
+              "multiple": false
+          },
+          {
+              "name": "block",
+              "label": "Block",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter block"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "block",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "block"
+              },
+              "multiple": false
+          },
+          {
+              "name": "cluster",
+              "label": "Cluster",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter cluster"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "cluster",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "cluster"
+              },
+              "multiple": false
+          },
+          {
+              "name": "school",
+              "label": "School",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter school"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "school",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "school"
+              },
+              "multiple": false
+          },
+          {
+              "name": "professional_role",
+              "label": "Professional role",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "text",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter professional role"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "professional_role",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "professional role"
+              },
+              "multiple": false
+          },
+          {
+              "name": "professional_subroles",
+              "label": "Professional subrole",
+              "class": "ion-no-margin",
+              "value": [],
+              "type": "chip",
+              "position": "",
+              "disabled": true,
+              "errorMessage": {
+                  "required": "Enter professional subrole"
+              },
+              "validators": {
+                  "required": true
+              },
+              "options": [],
+              "meta": {
+                  "entityType": "professional_subroles",
+                  "showSelectAll": true,
+                  "showAddOption": {
+                      "showAddButton": false,
+                      "addChipLabel": ""
+                  },
+                  "errorLabel": "professional subrole"
+              },
+              "multiple": true
+          }
+      ]
+      }
+    }
+  };
     this.profileImageData.isUploaded = true;
     this.formData = _.get(response, 'data.fields');
     const entityNames = await this.form.getEntityNames(this.formData);
@@ -107,6 +533,8 @@ export class EditProfilePage implements OnInit, isDeactivatable {
     }else{
         this.headerConfig.backButton = true;
     }
+
+        console.log(this.formData, 'form')
   }
 
   async canPageLeave() {
@@ -177,7 +605,16 @@ export class EditProfilePage implements OnInit, isDeactivatable {
             form[entityKey] = control.multiple ? _.map(form[entityKey], 'value') : form[entityKey];
             }
         });
+
+       
+          if (form.about === '') {
+          form.about = 'NA';
+          }
+         console.log(form)
         this.form1.myForm.markAsPristine();
+        
+        console.log(this.form1.myForm, 'form')
+        
         this.updated = await this.profileService.profileUpdate(form);
         this.userDetails.profile_mandatory_fields =[];
         if(this.updated && this.redirectUrl){ 
