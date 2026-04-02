@@ -53,6 +53,7 @@
             (paginatorChanged)="onPaginatorChange($event)"
             (onSorting)="onSorting($event)"
             [setPaginatorToFirstpage]="setPaginatorToFirstpage()"
+            [stickyHeader]="true"
             [showPaginator]="true">
             <div class="download" (click)="onClickDownload()">{{ download | translate}}</div>
           </app-generic-table>

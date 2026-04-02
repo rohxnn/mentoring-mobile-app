@@ -45,7 +45,7 @@
       <div class="scrollable-table ">
       <app-generic-table [headingText]="this.data.control.meta.url" [columnData]="columnData" [tableData]="tableData()"
         [totalCount]="count()" (onClickEvent)='onButtonCLick($event)' (paginatorChanged)="onPaginatorChange($event)" (onSorting)="onSorting($event)" 
-        [noDataMessage]="noDataMessage()" [setPaginatorToFirstpage]="setPaginatorToFirstpage()" [showPaginator]="showPaginator()" (onSelectAllChange)="onSelectAll($event)" [maxCount]="maxCount" [selectedCount]="selectedList.length" (onSelectAllXChange)="onSelectAllX($event)" [selectedList]="selectedList" [disabledCheckboxId]="disabledCheckboxId" [showSelectAll]="showSelectAll" [showCheckbox]="showCheckbox"></app-generic-table>
+        [noDataMessage]="noDataMessage()" [setPaginatorToFirstpage]="setPaginatorToFirstpage()" [stickyHeader]="true" [showPaginator]="showPaginator()" (onSelectAllChange)="onSelectAll($event)" [maxCount]="maxCount" [selectedCount]="selectedList.length" (onSelectAllXChange)="onSelectAllX($event)" [selectedList]="selectedList" [disabledCheckboxId]="disabledCheckboxId" [showSelectAll]="showSelectAll" [showCheckbox]="showCheckbox"></app-generic-table>
       </div>
     </ion-col>
     }

@@ -21,6 +21,7 @@ export class GenericTableComponent implements OnInit {
   @Input() noDataMessage;
   @Input() showPaginator
   @Input() setPaginatorToFirstpage
+  @Input() stickyHeader = false;
   @Output() onClickEvent = new EventEmitter();
   @Output() paginatorChanged = new EventEmitter();
   @Output() onSorting = new EventEmitter();

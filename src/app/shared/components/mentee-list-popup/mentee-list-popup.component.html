@@ -25,7 +25,7 @@
     }
   } @else {
   <div>
-    <app-generic-table [headingText]="headingText" [columnData]="columnData" [tableData]="enrolledMenteeList()" [showPaginator]="false">
+    <app-generic-table [headingText]="headingText" [columnData]="columnData" [tableData]="enrolledMenteeList()" [stickyHeader]="true" [showPaginator]="false">
       <div class="download" (click)="onClickDownload()">{{ download | translate}}</div>
     </app-generic-table>
   </div>
